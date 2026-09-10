@@ -1,0 +1,8 @@
+World-Model Post-Training Audit
+
+This repository includes a modified vendored copy of verl under `verl/`.
+The vendored source is based on volcengine/verl v0.7.1 at commit bec9ef7.
+See `verl/VENDOR_SHA.txt`, `verl/Notice.txt`, and `verl/LICENSE` for provenance
+and license information.
+
+Project-specific additions and modifications are licensed under Apache-2.0.

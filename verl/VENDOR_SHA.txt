@@ -1,0 +1,2 @@
+https://github.com/volcengine/verl.git @ bec9ef7 (tag v0.7.1)
+# Re-vendored from the stable v0.7.1 release on 2026-07-13.
