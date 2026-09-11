@@ -1,0 +1,1 @@
+"""VisualWebArena task evaluation."""

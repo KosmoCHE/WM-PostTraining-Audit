@@ -1,8 +1,8 @@
 # World-Model Post-Training Audit
 
-Training and offline data-preparation code for *Does Learning to Predict the World Help LLM Agents Act? Auditing World-Model Post-Training*.
+Training, offline data-preparation, and formal evaluation code for *Does Learning to Predict the World Help LLM Agents Act? Auditing World-Model Post-Training*.
 
-This release intentionally contains only the code needed to prepare training data and train the conditions reported in the paper. Evaluation code, analysis scripts, experiment logs, model checkpoints, and datasets are not included.
+This release intentionally contains only the code needed to prepare training data, train the reported conditions, and reproduce the formal task and next-observation metrics. Mechanism analysis, figure generation, experiment logs, model checkpoints, and datasets are not included.
 
 ## Included experiments
 
@@ -20,9 +20,10 @@ This release intentionally contains only the code needed to prepare training dat
 ```text
 data_pipeline/   Offline trajectory-to-training-data transforms
 training/        Canonical launchers for the paper experiments
+eval/            Task success, pass@k, and prediction-accuracy evaluators
 verl/            Vendored verl v0.7.1 plus the OPSD and audit extensions
 docs/            Input schemas and data-preparation notes
-tests/           CPU-only checks for project-specific preprocessing
+tests/           CPU-only checks for preprocessing and evaluation helpers
 ```
 
 ## Installation
@@ -32,6 +33,7 @@ The reported runs used eight H100 GPUs. Create an environment compatible with CU
 ```bash
 python -m pip install -e ./verl
 python -m pip install -r requirements-data.txt
+python -m pip install -r requirements-eval.txt
 ```
 
 The embedding-reward experiments additionally require an OpenAI-compatible embedding endpoint. The launch script can start Qwen3-Embedding-8B through SGLang when `EMBEDDING_MODEL_PATH` is set.
@@ -74,6 +76,16 @@ bash training/run_vwa_coin.sh
 ```
 
 All paths and runtime choices can be overridden with environment variables. See [training/README.md](training/README.md) for the full mapping and defaults.
+
+## Evaluate
+
+The evaluation runners target OpenAI-compatible model servers and emit a shared task-level JSONL schema. ALFWorld supports list and no-list regimes, ScienceWorld uses the fixed AgentGym item list, and VisualWebArena uses the paper's tier-B prompt and pinned upstream runtime. Next-observation prediction and the dynamics-focused LLM judge are also included.
+
+See [eval/README.md](eval/README.md) for environment setup and commands. The shortest metric command is:
+
+```bash
+python -m eval.metrics --input outputs/eval/<run>.jsonl --k 1 8 16 64
+```
 
 ## Scope and provenance
 
